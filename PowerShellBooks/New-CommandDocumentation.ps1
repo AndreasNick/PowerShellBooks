@@ -41,8 +41,7 @@ function New-CommandDocumentation {
     [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin $TopMargin -BottomMargin $BottomMargin -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
     $result = $Document.Open() 
-
-  
+    
     $helpText = Get-Help $command -Full
 
     Add-Headline -Document $Document -Text $("Cmdlet: " + $helpText.Name)
@@ -63,8 +62,8 @@ function New-CommandDocumentation {
       }
     }
    
-    #$result = $result -replace $Command, $("`n" + $Command)
-   
+    $result = $result -replace $Command, $("`n`n" + $Command)
+    $result = $result.substring(2)
     Add-text -Document $Document $result -FontName "Courier"
     Add-NewLine -Document $Document
 
@@ -182,11 +181,7 @@ function New-CommandDocumentation {
  
     Add-NewLine -Document $Document
     $result = $Document.Close() 
-  
-  
-  
-    return $Pages
-  
+      return $Pages
     
   #$Pages
 

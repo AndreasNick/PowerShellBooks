@@ -1,22 +1,19 @@
+<#
+
+Test script for the PowerShell Book Generator.
+
+The PowerShell Book Generator creates an A4 PDF document with full help on a PowerShell module. There is also a table of contents and a title page.
+
+(c) Andreas Nick 2019
+
+#>
+
 Import-Module $PSScriptRoot\PowerShellBooks -Force
 
-
-
-$Module = 'UEV'
+$Module = 'AppVClient'
 
 $OutFile = '{0}\desktop\Powershell_With_{1}.pdf' -f $env:userprofile, $Command
 
 New-PowerShellBook -OutputPdfDocument $OutFile -Module $Module
-
-
-#$pdf.AddHeader((New-Object iTextSharp.text.Paragraph "Header"))
-<#
-
-    #Add-Image -Document $pdf -File "$PSScriptRoot\kitten1.jpg"
-    Add-Table -Document $pdf -Dataset @('Name', 'Mittens', 'Age', '1.5', 'Fur color', 'Black and white', 'Favorite toy', 'String') -Cols 2 -Centered
-    #Add-Image -Document $pdf -File "$PSScriptRoot\kitten2.jpg"
-    Add-Table -Document $pdf -Dataset @('Name', 'Achilles', 'Age', '2', 'Fur color', 'Grey', 'Favorite toy', 'Shoes') -Cols 2 -Centered
-    Add-Text -Document $pdf -Text 'Meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow meow'
-#>
 
 

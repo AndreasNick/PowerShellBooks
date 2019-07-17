@@ -28,18 +28,21 @@ General notes
   )
 
   if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument" -Force }
-  [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin 20 -BottomMargin 20 -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
+  [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin $TopMargin -BottomMargin $BottomMargin -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
   $result = $Document.Open() 
   
+  Add-Headline -Document $Document -Text $("Table Of Contents")
+  Add-NewLine -Document $Document
+
   $dottedLine = new-object  iTextSharp.text.Chunk  ( new-object iTextSharp.text.pdf.draw.DottedLineSeparator );
   [iTextSharp.text.Paragraph] $p
 
   foreach($entry in $TOC){
     $p = New-Object iTextSharp.text.Paragraph -ArgumentList  @($entry.Commandlet)
-    $p.Add($dottedLine)
-    $p.Add($entry.pages)
-    $Document.add($p);
+    $null=$p.Add($dottedLine)
+    $null=$p.Add($entry.pages)
+    $null=$Document.add($p);
   }
 
   $Document.close();

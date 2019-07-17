@@ -16,12 +16,10 @@ function New-PowerShellBook {
     }
     
     if(-not( test-Path $TempFolder)){
-      New-Item -Path $TempFolder -ItemType Directory
+      New-Item -Path $TempFolder -ItemType Directory | Out-Null
     }
   
-    
     $commandlets = Get-Command -Module $Module | Sort-Object
-    
     
     $Indexliste = @()
     #$Currentpage=0
@@ -40,9 +38,9 @@ function New-PowerShellBook {
       #remove-Item -Path $TempFolder -Recurse 
     }
     
-    New-TableOfContent -OutputPdfDocument 'C:\Users\Andreas\Desktop\toc.pdf' -TOC $Indexliste
+    New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste
 
+    New-PoShBookTitlePage -OutputPdfDocument  $($TempFolder+'\title.pdf') -Modulename $Module
     
   }  
-    
 }
