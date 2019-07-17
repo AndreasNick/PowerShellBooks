@@ -19,3 +19,6 @@
 . $PSScriptRoot\New-Page.ps1
 . $PSScriptRoot\New-PDFDocument.ps1
 . $PSScriptRoot\New-Titel.ps1
+
+. $PSScriptRoot\New-PowerShellBook.ps1
+. $PSScriptRoot\New-TableOfContent.ps1

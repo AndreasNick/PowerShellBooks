@@ -1,31 +1,42 @@
 ﻿
 function New-CommandDocumentation {
-    <#
-.SYNOPSIS
-Short description
+  <#
+      .SYNOPSIS
+      Describe purpose of "New-CommandDocumentation" in 1-2 sentences.
 
-.DESCRIPTION
-Long description
+      .DESCRIPTION
+      Add a more complete description of what the function does.
 
-.PARAMETER OutputPdfDocument
-Parameter description
+      .PARAMETER OutputPdfDocument
+      Describe parameter -OutputPdfDocument.
 
-.PARAMETER Command
-Parameter description
+      .PARAMETER Command
+      Describe parameter -Command.
 
-.EXAMPLE
-An example
+      .EXAMPLE
+      New-CommandDocumentation -OutputPdfDocument Value -Command Value
+      Describe what this call does
 
-.NOTES
-General notes
-#>
+      .NOTES
+      Place additional notes here.
 
-    [CmdletBinding()]
-    param(
-        [System.IO.FileInfo] $OutputPdfDocument,
-        [string] $Command = "Get-Location"
-    )
+      .LINK
+      URLs to related sites
+      The first link is opened by Get-Help -Online New-CommandDocumentation
 
+      .INPUTS
+      List of input types that are accepted by this function.
+
+      .OUTPUTS
+      List of output types produced by this function.
+  #>
+
+
+  [OutputType([int])]
+  param(
+    [Parameter(Mandatory=$true)][System.IO.FileInfo] $OutputPdfDocument,
+    [string] $Command = "Get-Location"
+  )
     if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument" -Force }
     [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin 20 -BottomMargin 20 -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
@@ -46,22 +57,18 @@ General notes
     $syntax = $($helpText.syntax | Out-String)
     $result = ""
   
-  
     foreach ($line in @($syntax.Split("`n"))) {
-        if ($line.length -gt 2) {
-            $result += $line
-        }
+      if ($line.length -gt 2) {
+        $result += $line
+      }
     }
   
-  
     Add-text -Document $Document $result -FontName "Courier"
-  
     Add-NewLine -Document $Document
-  
     Add-SecondHeadline -Document $Document -Text "Description"
   
     foreach ($desc in $helpText.description) {
-        Add-Text -Document $Document -Text $desc.Text
+      Add-Text -Document $Document -Text $desc.Text
     }
 
     Add-NewLine -Document $Document 
@@ -80,97 +87,103 @@ General notes
     
     foreach ($para in $helpText.parameters.parameter) {
   
-        $p = New-Object -TypeName iTextSharp.text.Paragraph
-        $Font = [iTextSharp.text.FontFactory]::GetFont("Arial", $ParagraphFontSize, [iTextSharp.text.Font]::NORMAL, [iTextSharp.text.BaseColor]::BLACK)
-        $FatFont = [iTextSharp.text.FontFactory]::GetFont("Arial", $ParagraphFontSize, [iTextSharp.text.Font]::BOLD, [iTextSharp.text.BaseColor]::Black)
+      $p = New-Object -TypeName iTextSharp.text.Paragraph
+      $Font = [iTextSharp.text.FontFactory]::GetFont("Arial", $ParagraphFontSize, [iTextSharp.text.Font]::NORMAL, [iTextSharp.text.BaseColor]::BLACK)
+      $FatFont = [iTextSharp.text.FontFactory]::GetFont("Arial", $ParagraphFontSize, [iTextSharp.text.Font]::BOLD, [iTextSharp.text.BaseColor]::Black)
     
-        $p.SpacingBefore = 2
-        $p.SpacingAfter = 2
-        $result = $p.Add((New-Object iTextSharp.text.Chunk  $("Parameter :"), $font))
-        $result = $p.Add((New-Object iTextSharp.text.Chunk  $($para.name), $FatFont))
-        $result = $Document.Add($p)
-        Add-Text -Document $Document -Text $("Description :" + $para.description[0].Text)
-        Add-NewLine -Document $Document
-        $parTable = New-Object System.Collections.ArrayList  
-        
-        $result = $parTable.add("Required")
-        $result = $parTable.add($para.required)
-        $result = $parTable.add("Position")
-        $result = $parTable.add($para.position)
-        $result = $parTable.add("Default value")
-        $result = $parTable.add($para.DefaultValue)
-        $result = $parTable.add('Accept pipeline input?')
-        $result = $parTable.add($para.PipelineInput)  
-        $result = $parTable.add('Accept wildcard characters?')
-        $result = $parTable.add($para.globbing)         
+      $p.SpacingBefore = 2
+      $p.SpacingAfter = 2
+      $result = $p.Add((New-Object iTextSharp.text.Chunk  $("Parameter :"), $font))
+      $result = $p.Add((New-Object iTextSharp.text.Chunk  $($para.name), $FatFont))
+      $result = $Document.Add($p)
+        if ($para.description.count -ge 1 ) {
+            Add-Text -Document $Document -Text $("Description :" + $para.description[0].Text)
+            Add-NewLine -Document $Document
+        }
 
-        $result = Add-Table -Document $Document -Dataset $parTable -Cols 2 -Centered
-        Add-NewLine  -Document $Document
+      $parTable = New-Object System.Collections.ArrayList  
+        
+      $result = $parTable.add("Required")
+      $result = $parTable.add($para.required)
+      $result = $parTable.add("Position")
+      $result = $parTable.add($para.position)
+      $result = $parTable.add("Default value")
+      $result = $parTable.add($para.DefaultValue)
+      $result = $parTable.add('Accept pipeline input?')
+      $result = $parTable.add($para.PipelineInput)  
+      $result = $parTable.add('Accept wildcard characters?')
+      $result = $parTable.add($para.globbing)         
+
+      $result = Add-Table -Document $Document -Dataset $parTable -Cols 2 -Centered
+      Add-NewLine  -Document $Document
     
     }
    
    
     if ($helpText.inputTypes -ne $null ) {
-        if ($helpText.inputTypes.inputType.description.Length -ne 0) {
-            Add-SecondHeadline -Document $Document "Inputs"
-            foreach ($desc in $helpText.inputTypes.inputType.description) {
+      if ($helpText.inputTypes.inputType.description.Length -ne 0) {
+        Add-SecondHeadline -Document $Document "Inputs"
+        foreach ($desc in $helpText.inputTypes.inputType.description) {
         
-                Add-Text -Document $Document -text $desc.text
-            }
-            Add-Text -Document $Document -text $("Type : " + $helpText.inputTypes.inputType.type.name)
-            Add-NewLine -Document $Document
+          Add-Text -Document $Document -text $desc.text
         }
+        Add-Text -Document $Document -text $("Type : " + $helpText.inputTypes.inputType.type.name)
+        Add-NewLine -Document $Document
+      }
     
     }
 
     if ($helpText.returnValues -ne $null ) {
-        if ($helpText.returnValues.returnValue.description.Length -ne 0) {
-            Add-SecondHeadline -Document $Document "Outputs"
-            foreach ($desc in $helpText.returnValues.returnValue.description) {
+      if ($helpText.returnValues.returnValue.description.Length -ne 0) {
+        Add-SecondHeadline -Document $Document "Outputs"
+        foreach ($desc in $helpText.returnValues.returnValue.description) {
         
-                Add-Text -Document $Document -text $desc.text
-            }
-            Add-Text -Document $Document -text $("Type : " + $helpText.returnValues.returnValue.type.name)
-            Add-NewLine -Document $Document
+          Add-Text -Document $Document -text $desc.text
         }
+        Add-Text -Document $Document -text $("Type : " + $helpText.returnValues.returnValue.type.name)
+        Add-NewLine -Document $Document
+      }
     
     }
   
    
     if ($helpText.alertSet.alert.Count -ne 0) {
 
-        Add-SecondHeadline -Document $Document "Notes" 
+      Add-SecondHeadline -Document $Document "Notes" 
     
-        foreach ($note in $helpText.alertSet.alert) {
-            Add-Text -Document $Document $($note.Text).Trim() 
-            Add-NewLine -Document $Document 
-        } 
+      foreach ($note in $helpText.alertSet.alert) {
+        Add-Text -Document $Document $($note.Text).Trim() 
+        Add-NewLine -Document $Document 
+      } 
 
     }
   
   
     if ($helpText.examples.example.Count -gt 0) {
-        Add-SecondHeadline -Document $Document "Examples"
-        foreach ($example in $helpText.examples.example) {
-            Add-Text -Document $Document $example.title
-            foreach ($remarks in $example.Remarks) {
-                Add-Text -Document $Document -Text $remarks.Text 
-            }
-      
-            #Code
-            $result = Add-Table -Document $Document -Dataset @($example.Code + "`n") -UsegrayBG -Cols 1 -Centered  -UseConsoleFont -Noborder -WidthPercentage 95
-            Add-NewLine  -Document $Document
-      
-            Add-NewLine -Document $Document
-    
+      Add-SecondHeadline -Document $Document "Examples"
+      foreach ($example in $helpText.examples.example) {
+        Add-Text -Document $Document $example.title
+        foreach ($remarks in $example.Remarks) {
+          Add-Text -Document $Document -Text $remarks.Text 
         }
-    
+      
+        #Code
+        $result = Add-Table -Document $Document -Dataset @($example.Code + "`n") -UsegrayBG -Cols 1 -Centered  -UseConsoleFont -Noborder -WidthPercentage 95
+        Add-NewLine -Document $Document
+        Add-NewLine -Document $Document
+      }
     }
     
-    #$pdf.PageNumber
-    #$global:writer.CurrentPageNumber
-
+    $Pages =  $global:writer.CurrentPageNumber
+ 
     Add-NewLine -Document $Document
     $result = $Document.Close() 
+  
+  
+  
+    return $Pages
+  
+    
+  #$Pages
 
 }
