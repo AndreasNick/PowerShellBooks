@@ -10,7 +10,7 @@ The PowerShell Book Generator creates an A4 PDF document with full help on a Pow
 
 Import-Module $PSScriptRoot\PowerShellBooks -Force
 
-$Module = 'AppVClient'
+$Module = 'psconftris'
 
 $OutFile = '{0}\desktop\Powershell_With_{1}.pdf' -f $env:userprofile, $Command
 
