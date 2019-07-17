@@ -38,7 +38,7 @@ function New-CommandDocumentation {
     [string] $Command = "Get-Location"
   )
     if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument" -Force }
-    [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin 20 -BottomMargin 20 -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
+    [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin $TopMargin -BottomMargin $BottomMargin -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
     $result = $Document.Open() 
 
@@ -62,9 +62,12 @@ function New-CommandDocumentation {
         $result += $line
       }
     }
-  
+   
+    #$result = $result -replace $Command, $("`n" + $Command)
+   
     Add-text -Document $Document $result -FontName "Courier"
     Add-NewLine -Document $Document
+
     Add-SecondHeadline -Document $Document -Text "Description"
   
     foreach ($desc in $helpText.description) {
@@ -145,15 +148,16 @@ function New-CommandDocumentation {
       }
     
     }
-  
    
     if ($helpText.alertSet.alert.Count -ne 0) {
 
       Add-SecondHeadline -Document $Document "Notes" 
     
       foreach ($note in $helpText.alertSet.alert) {
+        if($node -ne $null){
         Add-Text -Document $Document $($note.Text).Trim() 
         Add-NewLine -Document $Document 
+        }
       } 
 
     }

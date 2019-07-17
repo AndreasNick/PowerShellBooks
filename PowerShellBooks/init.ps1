@@ -12,6 +12,9 @@ $Global:SecondHeadlineFontSize = 16
 $Global:LeftMargin = 80
 $Global:RightMargin = 80
 
+$Global:TopMargin = 80
+$Global:BottomMargin = 80
+
 Unblock-File -Path "$PSScriptRoot\lib\itextsharp.dll" -Confirm:$false
 Add-Type -Path "$PSScriptRoot\lib\itextsharp.dll"
 

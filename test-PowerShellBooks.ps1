@@ -2,12 +2,11 @@ Import-Module $PSScriptRoot\PowerShellBooks -Force
 
 
 
-$Command = 'DISM'
+$Module = 'UEV'
 
 $OutFile = '{0}\desktop\Powershell_With_{1}.pdf' -f $env:userprofile, $Command
 
-New-CommandDocumentation -OutputPdfDocument $OutFile -Command $Command 
-
+New-PowerShellBook -OutputPdfDocument $OutFile -Module $Module
 
 
 #$pdf.AddHeader((New-Object iTextSharp.text.Paragraph "Header"))

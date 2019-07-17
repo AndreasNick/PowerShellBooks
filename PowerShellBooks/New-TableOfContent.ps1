@@ -32,7 +32,7 @@ General notes
 
   $result = $Document.Open() 
   
-  $dottedLine = new-object  iTextSharp.text.Chunk  (new-object iTextSharp.text.pdf.draw.DottedLineSeparator());
+  $dottedLine = new-object  iTextSharp.text.Chunk  ( new-object iTextSharp.text.pdf.draw.DottedLineSeparator );
   [iTextSharp.text.Paragraph] $p
 
   foreach($entry in $TOC){

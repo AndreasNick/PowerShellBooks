@@ -11,6 +11,9 @@ function New-PowerShellBook {
     $Temp = $env:TEMP
     $TempFolder = "$Temp\PowerShellBooksTemp"
   
+    if(test-Path $TempFolder){
+      remove-Item -Path $TempFolder -Recurse 
+    }
     
     if(-not( test-Path $TempFolder)){
       New-Item -Path $TempFolder -ItemType Directory
@@ -25,7 +28,7 @@ function New-PowerShellBook {
   
     foreach($command in $commandlets){
     
-      $OutFile = '{0}\Powershell_With_{1}.pdf' -f $TempFolder, $Command
+      $OutFile = '{0}\Powershell_CmdLet_{1}.pdf' -f $TempFolder, $Command
       $Pages =  New-CommandDocumentation -OutputPdfDocument $OutFile -Command $Command 
       #Write-Output $Pages
 
@@ -34,12 +37,12 @@ function New-PowerShellBook {
     }
     
     if(test-Path $TempFolder){
-      remove-Item -Path $TempFolder -Recurse 
+      #remove-Item -Path $TempFolder -Recurse 
     }
     
-    New-TableOfContent -OutputPdfDocument C:\Users\Andreas\Desktop\toc.pdf -TOC $Indexliste
+    New-TableOfContent -OutputPdfDocument 'C:\Users\Andreas\Desktop\toc.pdf' -TOC $Indexliste
 
-    $Indexliste
+    
   }  
     
 }
