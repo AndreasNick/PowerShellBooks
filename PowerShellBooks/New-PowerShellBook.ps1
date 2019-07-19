@@ -22,7 +22,7 @@ function New-PowerShellBook {
     $commandlets = Get-Command -Module $Module | Sort-Object
     
     $Indexliste = @()
-    #$Currentpage=0
+    $Currentpage=0
   
     foreach($command in $commandlets){
     
@@ -30,17 +30,24 @@ function New-PowerShellBook {
       $Pages =  New-CommandDocumentation -OutputPdfDocument $OutFile -Command $Command 
       #Write-Output $Pages
 
-      $Indexliste += [pscustomobject] @{"Commandlet" = "$Command" ; "Pages" =  $Pages }
-      #Write-Output $($Pages.count.ToString() + " ->  $pages")
+      $Indexliste += [pscustomobject] @{"Commandlet" = "$Command" ; "Pages" =  $Currentpage }
+      $Currentpage += $Pages
+      
     }
     
+    
+    $Pages = New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste -AddToPageNumber 2
+    Write-Host $Pages -ForegroundColor Blue
+
+    New-PoShBookTitlePage -OutputPdfDocument  $($TempFolder+'\title.pdf') -Modulename $Module
+
+    #Cleanup Temp Folder    
     if(test-Path $TempFolder){
       #remove-Item -Path $TempFolder -Recurse 
     }
-    
-    New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste
 
-    New-PoShBookTitlePage -OutputPdfDocument  $($TempFolder+'\title.pdf') -Modulename $Module
-    
+
+
+
   }  
 }

@@ -6,9 +6,10 @@ function New-PoShBookTitlePage {
         [Parameter(Mandatory = $true)][System.IO.FileInfo] $OutputPdfDocument,
         [String] $Modulename = "Custom Module",
         [switch] $DisableCredits = $false
+        
     )
 
-    if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument" -Force }
+    if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument"  }
     [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin $TopMargin -BottomMargin $BottomMargin -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
 
@@ -56,7 +57,7 @@ function New-PoShBookTitlePage {
    $pic.Alignment = [iTextSharp.text.Image]::ALIGN_CENTER
 
    
-   $document.Add($pic)
+   $null=$document.Add($pic)
 
     Add-Title -Document $Document -Text "PowerShell with" -Color 'black' -Centered -FontName "Century Gothic" -FontSize 26
     Add-Title -Document $Document -Text "$Modulename" -Color 'black' -Centered -FontName "Century Gothic" -FontSize 26

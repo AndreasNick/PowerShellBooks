@@ -18,6 +18,7 @@
 . $PSScriptRoot\New-CommandDocumentation.ps1
 . $PSScriptRoot\New-Page.ps1
 . $PSScriptRoot\New-PDFDocument.ps1
+. $PSScriptRoot\New-CombineMultiplePDFs
 . $PSScriptRoot\New-PoShBookTitlePage.ps1
 . $PSScriptRoot\New-TableOfContent.ps1
 . $PSScriptRoot\New-PowerShellBook.ps1

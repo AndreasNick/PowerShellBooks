@@ -23,11 +23,12 @@ General notes
   [OutputType([int])]
   param(
     [Parameter(Mandatory=$true)][System.IO.FileInfo] $OutputPdfDocument,
-    [PSCustomObject[]] $TOC
+    [PSCustomObject[]] $TOC,
+    [int] $AddToPageNumber = 0 #Titlepage + Toc = 2
     
   )
 
-  if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument" -Force }
+  if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument"  }
   [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin $TopMargin -BottomMargin $BottomMargin -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
   $result = $Document.Open() 
@@ -41,10 +42,12 @@ General notes
   foreach($entry in $TOC){
     $p = New-Object iTextSharp.text.Paragraph -ArgumentList  @($entry.Commandlet)
     $null=$p.Add($dottedLine)
-    $null=$p.Add($entry.pages)
+    $null=$p.Add($entry.pages + $AddToPageNumber)
     $null=$Document.add($p);
   }
 
-  $Document.close();
+  $Pages =  $global:writer.CurrentPageNumber
 
+  $Document.close();
+  return $Pages
 }

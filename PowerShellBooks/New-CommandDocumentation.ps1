@@ -37,7 +37,7 @@ function New-CommandDocumentation {
     [Parameter(Mandatory=$true)][System.IO.FileInfo] $OutputPdfDocument,
     [string] $Command = "Get-Location"
   )
-    if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument" -Force }
+    if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument"  }
     [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -TopMargin $TopMargin -BottomMargin $BottomMargin -LeftMargin $LeftMargin -RightMargin $RightMargin -Author 'The PowerShell Ebook Generator' 
 
     $result = $Document.Open() 
