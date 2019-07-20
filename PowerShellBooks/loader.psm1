@@ -15,7 +15,7 @@
 . $PSScriptRoot\Add-Table.ps1
 . $PSScriptRoot\Add-Text.ps1
 . $PSScriptRoot\Add-Title.ps1
-. $PSScriptRoot\New-CommandDocumentation.ps1
+. $PSScriptRoot\New-PowerShellCommandDocumentation.ps1
 . $PSScriptRoot\New-Page.ps1
 . $PSScriptRoot\New-PDFDocument.ps1
 . $PSScriptRoot\Add-PageNumbers.ps1

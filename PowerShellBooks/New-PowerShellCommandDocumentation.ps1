@@ -48,7 +48,12 @@ function New-PowerShellCommandDocumentation {
 
     Add-SecondHeadline -Document $Document -Text "Syntax"
   
-    $syntax = $($helpText.syntax | Out-String)
+    #$syntax = $($helpText.syntax | Out-String)
+    $syntax =  $helpText | Out-String
+    $pattern = '(?ms)SYNTAX(.+?)(DESCRIPTION|PARAMETERS|ALIASE)'
+    $syntax = [regex]::Match($syntax, $pattern).Groups[1].Value
+
+
     $result = ""
   
     foreach ($line in @($syntax.Split("`n"))) {
@@ -57,7 +62,7 @@ function New-PowerShellCommandDocumentation {
       }
     }
    
-    $result = $result -replace $Command, $("`n`n" + $Command)
+    $result = $result -replace $Command, $("`n" + $Command)
     $result = $result.substring(2)
     Add-text -Document $Document $result -FontName "Courier"
     Add-NewLine -Document $Document
