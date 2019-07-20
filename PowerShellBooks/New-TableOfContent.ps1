@@ -2,22 +2,29 @@
 function New-TableOfContent {
 <#
 .SYNOPSIS
-Short description
+Create a Tabel Of Content for as list with pscustomobjects
 
 .DESCRIPTION
-Long description
+Create a Tabel Of Content for as list with pscustomobjects
 
 .PARAMETER OutputPdfDocument
-Parameter description
+The path to the output file
 
 .PARAMETER TOC
-Parameter description
+[PSCustomObject[]] $TOC a List with entries @{Commandlet=''; Pages=''} for the toc
 
 .EXAMPLE
-An example
+New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste -AddToPageNumber (2 + $pages)
 
 .NOTES
-General notes
+(c) Andreas Nick Under the MIT License for the Module
+https://www.software-virtualisierung.de
+https://www.andreasnick.com
+
+We use iTextSharp as library to generate the pdf documents. 
+This is licensed under the GNU Affero General Public License.
+https://www.nuget.org/packages/iTextSharp/5.5.13.1 
+
 #>
 
   [OutputType([int])]

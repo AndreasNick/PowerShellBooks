@@ -1,3 +1,32 @@
+<#
+.SYNOPSIS
+This command binds several pdf documents together
+
+.DESCRIPTION
+This command binds several pdf documents together
+I included this command in the module, because otherwise 
+I didn't find anything for PowerShell. It will surely help one or the other.
+
+.PARAMETER fileNames
+A List of PDF Files zu combine
+
+.PARAMETER OutputPdfDocument
+The path to the output file
+
+.EXAMPLE
+New-CombineMultiplePDFs -fileNames @('c:\temp\file1.pdf','c:\temp\file2.pdf') -OutputPdfDocument 'c:\temp\combined.pdf' 
+
+.NOTES
+(c) Andreas Nick Under the MIT License for the Module
+https://www.software-virtualisierung.de
+https://www.andreasnick.com
+
+We use iTextSharp as library to generate the pdf documents. 
+This is licensed under the GNU Affero General Public License.
+https://www.nuget.org/packages/iTextSharp/5.5.13.1 
+
+#>
+
 function New-CombineMultiplePDFs
 {
   param(

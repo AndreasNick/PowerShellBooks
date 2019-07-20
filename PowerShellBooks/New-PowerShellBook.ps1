@@ -1,4 +1,34 @@
-﻿
+﻿<#
+.SYNOPSIS
+Create a PDF book from the PowerSHell documentation of a module
+
+.DESCRIPTION
+We use Get-Command [MODULNAME] to get all cmdlets of a PowerShell 
+module. Then we generate a documentation with index, title page and page numbering for the module.
+
+.PARAMETER OutputPdfDocument
+The path to the output file
+
+.PARAMETER Module
+The name of the PowerShell Module
+
+.PARAMETER DisableCredits
+If True, the messages about the author on the title page of the PDF document are switched off.
+
+.EXAMPLE
+New-PowerShellBook -OutputPdfDocument "c:\temp\PowerShell_With_AppV" -Module "AppVClient"
+
+.NOTES
+(c) Andreas Nick Under the MIT License for the Module
+https://www.software-virtualisierung.de
+https://www.andreasnick.com
+
+We use iTextSharp as library to generate the pdf documents. 
+This is licensed under the GNU Affero General Public License.
+https://www.nuget.org/packages/iTextSharp/5.5.13.1 
+
+#>
+
 function New-PowerShellBook {
 
   param(
@@ -31,9 +61,8 @@ function New-PowerShellBook {
     foreach($command in $commandlets){
     
       $OutFile = [String]'{0}\Powershell_CmdLet_{1}.pdf' -f $TempFolder, $Command
-      $Pages =  New-CommandDocumentation -OutputPdfDocument $OutFile -Command $Command 
-      #Write-Output $Pages
-
+      $Pages =  New-PowerShellCommandDocumentation -OutputPdfDocument $OutFile -Command $Command 
+  
       $Indexliste += [pscustomobject] @{"Commandlet" = "$Command" ; "Pages" =  $Currentpage }
       $Currentpage += $Pages
       $filelist.Add($OutFile) | Out-Null
@@ -43,7 +72,7 @@ function New-PowerShellBook {
     }
     
     $Pages = New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste -AddToPageNumber 3
-    #Write-Host $Pages -ForegroundColor Blue
+    
     if($pages -ne 1){
       New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste -AddToPageNumber (2 + $pages)
     }

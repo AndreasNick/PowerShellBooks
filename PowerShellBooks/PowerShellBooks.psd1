@@ -20,13 +20,13 @@ ModuleVersion = '1.0'
 GUID = '7dadb8b4-4369-4772-84d8-357005c07543'
 
 # Module Author
-Author = 'Andreas'
+Author = 'Andreas Nick'
 
 # Company
-CompanyName = 'Andreas'
+CompanyName = 'Andreas Nick'
 
 # Copyright
-Copyright = '(c) 2019 Andreas. All rights reserved.'
+Copyright = '(c) 2019 Andreas. All rights reserved for the module (PowerShell) the MIT license is valid. The used library itextsharp is licensed under the GNU Affero General Public License version 3.'
 
 # Module Description
 Description = 'Create a PowerShell commandlet pdf book'
@@ -68,10 +68,10 @@ FormatsToProcess = @()
 NestedModules = @()
 
 # List of exportable functions
-FunctionsToExport = '*'
+FunctionsToExport = 'New-PowerShellBook', 'New-PowerShellCommandDocumentation', 'New-CombineMultiplePDFs'
 
 # List of exportable cmdlets
-CmdletsToExport = '*'
+CmdletsToExport = ''
 
 # List of exportable variables
 VariablesToExport = '*'

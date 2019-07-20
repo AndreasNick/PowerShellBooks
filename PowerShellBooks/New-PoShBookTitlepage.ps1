@@ -1,4 +1,22 @@
+<#
+.SYNOPSIS
+Create the first page of the PowerShell Book
 
+.PARAMETER OutputPdfDocument
+The path to the output file
+
+.PARAMETER Modulename
+The name of the PowerShell module
+
+.NOTES
+(c) Andreas Nick Under the MIT License for the Module
+https://www.software-virtualisierung.de
+https://www.andreasnick.com
+
+We use iTextSharp as library to generate the pdf documents. 
+This is licensed under the GNU Affero General Public License.
+https://www.nuget.org/packages/iTextSharp/5.5.13.1 
+#>
 function New-PoShBookTitlePage {
 
     [OutputType([int])]

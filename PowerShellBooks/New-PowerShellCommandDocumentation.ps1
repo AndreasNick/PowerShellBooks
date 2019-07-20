@@ -1,37 +1,32 @@
-﻿
-function New-CommandDocumentation {
-  <#
-      .SYNOPSIS
-      Describe purpose of "New-CommandDocumentation" in 1-2 sentences.
+﻿<#
+.SYNOPSIS
+Short description
 
-      .DESCRIPTION
-      Add a more complete description of what the function does.
+.DESCRIPTION
+create a pdf document about a PowerShell function or cmdlet
 
-      .PARAMETER OutputPdfDocument
-      Describe parameter -OutputPdfDocument.
+.PARAMETER OutputPdfDocument
+The path to the output file
 
-      .PARAMETER Command
-      Describe parameter -Command.
+.PARAMETER Command
+The order. For example, "Get-ChildItem"
 
-      .EXAMPLE
-      New-CommandDocumentation -OutputPdfDocument Value -Command Value
-      Describe what this call does
+.EXAMPLE
+#The command return the Number of Pages
+$pages = New-CommandDocumentation -OutputPdfDocument "c:\temp\get-ChildItems_Doc.pdf -Command "Get-ChildItems" 
 
-      .NOTES
-      Place additional notes here.
+.NOTES
+(c) Andreas Nick Under the MIT License for the Module
+https://www.software-virtualisierung.de
+https://www.andreasnick.com
 
-      .LINK
-      URLs to related sites
-      The first link is opened by Get-Help -Online New-CommandDocumentation
+We use iTextSharp as library to generate the pdf documents. 
+This is licensed under the GNU Affero General Public License.
+https://www.nuget.org/packages/iTextSharp/5.5.13.1 
 
-      .INPUTS
-      List of input types that are accepted by this function.
+#>
 
-      .OUTPUTS
-      List of output types produced by this function.
-  #>
-
-
+function New-PowerShellCommandDocumentation {
   [OutputType([int])]
   param(
     [Parameter(Mandatory=$true)][System.IO.FileInfo] $OutputPdfDocument,
