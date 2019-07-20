@@ -68,9 +68,14 @@ function New-PowerShellBook {
       $filelist.Add($OutFile) | Out-Null
 
       Write-Progress -Activity "Crteate Chapter pdf" -status "Create file $OutFile"  -percentComplete (($i / ($commandlets.count))*100) 
+
+
+
       $i++
     }
-    
+    Write-Progress -Completed -Activity "make progress bar dissapear"
+
+
     $Pages = New-TableOfContent -OutputPdfDocument $($TempFolder+'\toc.pdf') -TOC $Indexliste -AddToPageNumber 3
     
     if($pages -ne 1){
