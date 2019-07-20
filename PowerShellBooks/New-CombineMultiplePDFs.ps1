@@ -1,36 +1,41 @@
 function New-CombineMultiplePDFs
 {
-    param([string[]] $fileNames, [System.IO.FileInfo] $OutputPdfDocument)
-
-    $document = New-Object  Document()
-    if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument"  }
-    [iTextSharp.text.Document] $Document = New-PDFDocument -File  "$OutputPdfDocument"  -Author 'The PowerShell Ebook Generator' 
+  param(
+    [string[]] $fileNames, 
+    [System.IO.FileInfo] $OutputPdfDocument
+  )
+  
+  if (test-path "$OutputPdfDocument") { Remove-Item "$OutputPdfDocument"  }
+  
+  $fileStream = New-Object System.IO.FileStream($OutputPdfDocument, [System.IO.FileMode]::OpenOrCreate)
+  $document = New-Object iTextSharp.text.Document
+  $pdfCopy = New-Object iTextSharp.text.pdf.PdfCopy($document, $fileStream)
     
-    $document.Open()
-
-       foreach ($fileName in $fileNames)
-       {
-           [iTextSharp.text.pdf.PdfReader] $reader = iTextSharp.text.pdf.PdfReader $fileName
-           $reader.ConsolidateNamedDestinations();
-
-           for ($i = 1; $i -le $reader.NumberOfPages; $i++)
-           {                
-               $page = $global:writer.GetImportedPage($reader, $i)
-               $global:writer.AddPage($page)
-           }
-           
-           <#
-           PRAcroForm form = reader.AcroForm;
-           if (form != null)
-           {
-               writer.CopyAcroForm(reader);
-           }
-           #>
-           $reader.Close()
-       }
-
-       $Global:writer.Close()
-       $Global:document.Close();
    
+  $document.Open()
+  
+  foreach ($fileName in $fileNames)
+  {
+    [System.IO.FileInfo] $fi = $fileName
+    $reader = New-Object iTextSharp.text.pdf.PdfReader -argumentlist $fi.fullname
+    
+    $pdfCopy.AddDocument($reader);
+
+    #[iTextSharp.text.pdf.PdfReader] $reader = iTextSharp.text.pdf.PdfReader $fileName
+    #$pdfcopy = New-Object iTextSharp.text.pdf.PdfCopy -ArgumentList $fileName
+           
+    <#
+        PRAcroForm form = reader.AcroForm;
+        if (form != null)
+        {
+        writer.CopyAcroForm(reader);
+        }
+    #>
+    $reader.Close()
+  }
+
+  $pdfCopy.Close();
+  $document.Close();
+  $fileStream.Close(); 
 }
 

@@ -17,4 +17,4 @@ $Global:BottomMargin = 80
 
 Unblock-File -Path "$PSScriptRoot\lib\itextsharp.dll" -Confirm:$false
 Add-Type -Path "$PSScriptRoot\lib\itextsharp.dll"
-
+Add-Type -Assembly System.Drawing

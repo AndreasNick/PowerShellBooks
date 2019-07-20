@@ -5,7 +5,7 @@ function New-PoShBookTitlePage {
     param(
         [Parameter(Mandatory = $true)][System.IO.FileInfo] $OutputPdfDocument,
         [String] $Modulename = "Custom Module",
-        [switch] $DisableCredits = $false
+        [bool] $DisableCredits = $false
         
     )
 

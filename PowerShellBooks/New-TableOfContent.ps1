@@ -33,11 +33,11 @@ General notes
 
   $result = $Document.Open() 
   
-  Add-Headline -Document $Document -Text $("Table Of Contents")
-  Add-NewLine -Document $Document
+  $Null=Add-Headline -Document $Document -Text $("Table Of Contents")
+  $Null=Add-NewLine -Document $Document
 
   $dottedLine = new-object  iTextSharp.text.Chunk  ( new-object iTextSharp.text.pdf.draw.DottedLineSeparator );
-  [iTextSharp.text.Paragraph] $p
+  #[iTextSharp.text.Paragraph] $p
 
   foreach($entry in $TOC){
     $p = New-Object iTextSharp.text.Paragraph -ArgumentList  @($entry.Commandlet)
