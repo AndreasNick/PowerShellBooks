@@ -131,7 +131,7 @@ $window.ButStart.add_Click(
     if(Test-Path $Window.TxtOutputFolder.Text){
     
       $OutputDocument =$($Window.TxtOutputFolder.Text + "\PowerShell_With_" + $window.ComboModule.Text + '.pdf')
-     $OutputDocument = $OutputDocument -replace '\\','\'
+      $OutputDocument = $OutputDocument -replace '\\','\'
       
       Write-Output $OutputDocument
       
@@ -158,7 +158,7 @@ $window.ButFilesearch.add_Click{
     if ($browse.ShowDialog() -eq "OK")
         {
         
-		       $Window.TxtOutputFolder.Text = $browse.SelectedPath
+           $Window.TxtOutputFolder.Text = $browse.SelectedPath
 		
 		
         } 
@@ -181,6 +181,7 @@ $window.Link.add_MouseDown{
 
 #region Manipulate Window Content
 
+Write-Verbose "Query PowerShell modules.... please wait" -Verbose
 $window.ComboModule.ItemsSource = (Get-Command -Module * | select -Property Module -Unique).Module | sort
 $window.ComboModule.SelectedIndex=1
 $window.TxtOutputFolder.Text = $($env:Userprofile +'\Desktop\')
@@ -190,20 +191,19 @@ $window.TxtOutputFolder.Text = $($env:Userprofile +'\Desktop\')
 
 # Show Window
 
-while ($x -gt 0)
-{
-  # Content
-}
+<#
+    while ($x -gt 0)
+    {
+    # Content
+    }
+#>
 
 $result = Show-WPFWindow -Window $window
 
 #region Process results
 if ($result -eq $true)
 {
-  [PSCustomObject]@{
-    EmployeeName = $window.TxtName.Text
-    EmployeeMail = $window.TxtEmail.Text
-  }
+
 }
 else
 {
