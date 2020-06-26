@@ -50,13 +50,11 @@ function New-PowerShellCommandDocumentation {
     Add-SecondHeadline -Document $Document -Text "Syntax"
   
     #$syntax = $($helpText.syntax | Out-String)
-    $syntax =  $helpText | Out-String
-    $pattern = '(?ms)SYNTAX(.+?)(DESCRIPTION|PARAMETERS|ALIASE)'
+    $syntax =  $($helpText | Out-String) #-replace "`n","" -replace "`r",""
+    $pattern = '(?ms)SYNTAX(.+?)(.|\s)(DESCRIPTION|PARAMETERS|ALIASE|BESCHREIBUNG)'
     $syntax = [regex]::Match($syntax, $pattern).Groups[1].Value
 
-
-    $result = ""
-  
+   
     foreach ($line in @($syntax.Split("`n"))) {
       if ($line.length -gt 2) {
         $result += $line
@@ -163,10 +161,12 @@ function New-PowerShellCommandDocumentation {
     }
   
   
-    if ($helpText.examples.example.Count -gt 0) {
+    if ($null -ne $helpText.examples.example) {
       Add-SecondHeadline -Document $Document "Examples"
       foreach ($example in $helpText.examples.example) {
-        Add-Text -Document $Document $example.title
+        $title =  $($example.title) -replace 'BEISPIEL', 'EXAMPLE'
+        
+        Add-Text -Document $Document  $title 
         foreach ($remarks in $example.Remarks) {
           Add-Text -Document $Document -Text $remarks.Text 
         }
